@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
@@ -26,6 +25,9 @@ public class JwtBuilder {
         };
     }
 
+    /*
+    Generates new token with username as subject and expiration time
+    */
     public String generateToken(String username, Long expirationTimeSeconds) {
         return Jwts.builder()
                 .setSubject(username)
@@ -34,6 +36,9 @@ public class JwtBuilder {
                 .compact();
     }
 
+    /*
+    Validates token if valid returns claims else throws TokenValidationException()
+     */
     public Claims validateTokenAndGetClaims(String token) {
         try {
             return Jwts.parser()

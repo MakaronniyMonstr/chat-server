@@ -6,6 +6,7 @@ import com.vesko.chatserver.dto.view.JsonPage;
 import com.vesko.chatserver.dto.view.OutputViews;
 import com.vesko.chatserver.entity.User;
 import com.vesko.chatserver.service.UserService;
+import com.vesko.chatserver.specification.UserSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,14 +34,11 @@ public class UserController {
     @JsonView(OutputViews.Detailed.class)
     public JsonPage<UserDTO> findUserByCriteria(Pageable pageable,
                                                 @RequestParam(required = false) String username) {
-        Specification<User> specification = (root, cq, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (username != null) predicates.add(cb.like(root.get("username"), username + "%"));
-
-            return cb.and(predicates.toArray(new Predicate[0]));
-        };
-        Page<UserDTO> page = userService.findUsersByCriteriaAndPage(specification, pageable).map(UserDTO::new);
+        Page<UserDTO> page = userService.findUsersByCriteriaAndPage(
+                Specification
+                        .where(UserSpecifications.usernameStartsWith(username)),
+                pageable)
+                .map(UserDTO::new);
 
         return new JsonPage<>(
                 page.getContent(),
