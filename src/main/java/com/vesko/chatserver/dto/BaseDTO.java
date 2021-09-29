@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.vesko.chatserver.dto.view.InputViews;
 import com.vesko.chatserver.dto.view.OutputViews;
 import com.vesko.chatserver.entity.BaseEntity;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.GenericTypeResolver;
 
 import javax.validation.constraints.Null;
@@ -14,6 +15,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 
 @NoArgsConstructor
+@Setter
+@Getter
 public class BaseDTO<T extends BaseEntity> {
     @JsonView({OutputViews.Admin.class})
     @Null(groups = {InputViews.General.class})

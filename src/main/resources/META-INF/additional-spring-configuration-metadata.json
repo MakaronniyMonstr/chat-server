@@ -4,5 +4,15 @@
       "name": "spring.secret",
       "type": "java.lang.String",
       "description": "Description for spring.secret."
+    },
+    {
+      "name": "spring.jwt.refresh_expires",
+      "type": "java.lang.String",
+      "description": "Description for spring.jwt.refresh_expires."
+    },
+    {
+      "name": "spring.jwt.access_expires",
+      "type": "java.lang.String",
+      "description": "Description for spring.jwt.access_expires."
     }
   ] }

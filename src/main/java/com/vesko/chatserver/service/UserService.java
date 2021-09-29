@@ -3,10 +3,16 @@ package com.vesko.chatserver.service;
 import com.vesko.chatserver.entity.User;
 import com.vesko.chatserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 @Service
 public class UserService implements IUserService, UserDetailsService {
@@ -20,6 +26,11 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public User findUserByUsername(String username) {
         return (User) loadUserByUsername(username);
+    }
+
+    @Override
+    public Page<User> findUsersByCriteriaAndPage(Specification<User> specification, Pageable pageable) {
+        return userRepository.findAll(specification, pageable);
     }
 
     @Override
