@@ -26,11 +26,11 @@ public class BaseDTO<T extends BaseEntity> {
     @Null(groups = {InputViews.General.class})
     private Long version;
 
-    @JsonView({OutputViews.Detailed.class})
+    @JsonView({OutputViews.SuperDetailed.class})
     @Null(groups = {InputViews.General.class})
     private LocalDate createdAt;
 
-    @JsonView({OutputViews.Detailed.class})
+    @JsonView({OutputViews.SuperDetailed.class})
     @Null(groups = {InputViews.General.class})
     private LocalDate modifiedAt;
 

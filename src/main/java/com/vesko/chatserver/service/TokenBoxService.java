@@ -33,8 +33,8 @@ public class TokenBoxService implements ITokenBoxService {
         User user = userService.findUserByUsername(username);
         TokenBox tokenBox = user.getTokenBox();
 
-        tokenBox.setAccessToken(createAccessToken(username));
-        tokenBox.setRefreshToken(createRefreshToken(username));
+        tokenBox.setAccess(createAccessToken(username));
+        tokenBox.setRefresh(createRefreshToken(username));
 
         return tokenBox;
     }
@@ -42,7 +42,7 @@ public class TokenBoxService implements ITokenBoxService {
     @Override
     public TokenBox refreshTokenBox(String refreshToken) {
         String username = jwtBuilder.validateTokenAndGetClaims(refreshToken).getSubject();
-        tokenBoxRepository.findTokenBoxByUserUsernameAndRefreshToken(username, refreshToken)
+        tokenBoxRepository.findTokenBoxByUserUsernameAndRefresh(username, refreshToken)
                 .orElseThrow(() -> new TokenValidationException(username));
 
         return obtainTokenBox(username);
@@ -51,7 +51,7 @@ public class TokenBoxService implements ITokenBoxService {
     @Override
     public User validateTokenAndGetUser(String accessToken) {
         String username = jwtBuilder.validateTokenAndGetClaims(accessToken).getSubject();
-        TokenBox tokenBox = tokenBoxRepository.findTokenBoxByUserUsernameAndAccessToken(username, accessToken)
+        TokenBox tokenBox = tokenBoxRepository.findTokenBoxByUserUsernameAndAccess(username, accessToken)
                 .orElseThrow(() -> new TokenValidationException(username));
 
         return tokenBox.getUser();

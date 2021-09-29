@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface TokenBoxRepository extends JpaRepository<TokenBox, Long> {
     Optional<TokenBox> findTokenBoxByUserUsername(String username);
-    Optional<TokenBox> findTokenBoxByUserUsernameAndAccessToken(String username, String accessToken);
-    Optional<TokenBox> findTokenBoxByUserUsernameAndRefreshToken(String username, String refreshToken);
+    Optional<TokenBox> findTokenBoxByUserUsernameAndAccess(String username, String accessToken);
+    Optional<TokenBox> findTokenBoxByUserUsernameAndRefresh(String username, String refreshToken);
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Component
@@ -27,7 +29,7 @@ public class JwtBuilder {
     public String generateToken(String username, Long expirationTimeSeconds) {
         return Jwts.builder()
                 .setSubject(username)
-                .setExpiration(Date.from(Instant.ofEpochSecond(expirationTimeSeconds)))
+                .setExpiration(Date.from(Instant.now().plus(expirationTimeSeconds, ChronoUnit.SECONDS)))
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }

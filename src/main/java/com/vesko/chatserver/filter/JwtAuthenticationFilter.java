@@ -1,6 +1,7 @@
 package com.vesko.chatserver.filter;
 
 import com.vesko.chatserver.entity.User;
+import com.vesko.chatserver.exception.TokenValidationException;
 import com.vesko.chatserver.service.ITokenBoxService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final ITokenBoxService tokenBoxService;
@@ -37,15 +39,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        User user = tokenBoxService.validateTokenAndGetUser(header);
+        try {
+            User user = tokenBoxService.validateTokenAndGetUser(header);
 
-        final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                user,
-                null,
-                user.getAuthorities());
+            final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    user,
+                    null,
+                    user.getAuthorities());
 
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (TokenValidationException ignored) {}
 
         filter.doFilter(request, response);
     }

@@ -11,8 +11,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class TokenBox extends BaseEntity {
-    private String accessToken;
-    private String refreshToken;
+    private String access;
+    private String refresh;
 
     @OneToOne(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
