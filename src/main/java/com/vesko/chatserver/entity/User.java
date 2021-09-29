@@ -1,6 +1,7 @@
 package com.vesko.chatserver.entity;
 
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,6 @@ import java.util.Collections;
 @Entity
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -23,7 +23,8 @@ public class User extends BaseEntity implements UserDetails {
 
     private @NonNull String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "token_box_id",
             referencedColumnName = "id")
     private TokenBox tokenBox = new TokenBox();

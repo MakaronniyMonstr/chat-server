@@ -2,10 +2,7 @@ package com.vesko.chatserver.entity;
 
 import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "token_box")
 @Entity
@@ -18,6 +15,7 @@ public class TokenBox extends BaseEntity {
     private String refreshToken;
 
     @OneToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
             mappedBy = "tokenBox")
     private User user;
 }

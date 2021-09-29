@@ -32,13 +32,12 @@ public class JwtBuilder {
                 .compact();
     }
 
-    public String validateTokenAndGetUsername(String token) {
+    public Claims validateTokenAndGetClaims(String token) {
         try {
             return Jwts.parser()
                     .setSigningKeyResolver(signingKeyResolver)
                     .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
+                    .getBody();
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException ex) {
             throw new TokenValidationException(ex.getMessage());
         }

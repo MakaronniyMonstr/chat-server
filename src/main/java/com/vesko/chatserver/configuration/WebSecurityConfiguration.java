@@ -23,10 +23,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaAuditing
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
-    public WebSecurityConfiguration(UserDetailsService userDetailsService) {
+    public WebSecurityConfiguration(UserDetailsService userDetailsService,
+                                    JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.userDetailsService = userDetailsService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Override
@@ -55,6 +58,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    .addFilterAt(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                    .addFilterAt(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
