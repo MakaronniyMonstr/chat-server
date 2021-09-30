@@ -10,6 +10,7 @@ import javax.naming.AuthenticationException;
 public interface ITokenBoxService {
     TokenBox obtainTokenBox(String username);
     TokenBox refreshTokenBox(String refreshToken);
+    TokenBox clearTokenBox(String refreshToken);
 
     @Transactional(readOnly = true)
     User validateTokenAndGetUser(String accessToken);

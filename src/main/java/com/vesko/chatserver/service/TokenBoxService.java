@@ -49,6 +49,17 @@ public class TokenBoxService implements ITokenBoxService {
     }
 
     @Override
+    public TokenBox clearTokenBox(String refreshToken) {
+        String username = jwtBuilder.validateTokenAndGetClaims(refreshToken).getSubject();
+        TokenBox tokenBox = tokenBoxRepository.findTokenBoxByUserUsernameAndRefresh(username, refreshToken)
+                .orElseThrow(() -> new TokenValidationException(username));
+        tokenBox.setAccess(null);
+        tokenBox.setRefresh(null);
+
+        return tokenBox;
+    }
+
+    @Override
     public User validateTokenAndGetUser(String accessToken) {
         String username = jwtBuilder.validateTokenAndGetClaims(accessToken).getSubject();
         TokenBox tokenBox = tokenBoxRepository.findTokenBoxByUserUsernameAndAccess(username, accessToken)

@@ -69,4 +69,10 @@ public class AuthController {
     public TokenBoxDTO refresh(@Validated(InputViews.New.class) @RequestBody TokenBoxDTO tokenBoxDTO) {
         return new TokenBoxDTO(tokenBoxService.refreshTokenBox(tokenBoxDTO.getRefresh()));
     }
+
+    @PostMapping("/logout")
+    @JsonView({OutputViews.Detailed.class})
+    public TokenBoxDTO logout(@Validated(InputViews.New.class) @RequestBody TokenBoxDTO tokenBoxDTO) {
+        return new TokenBoxDTO(tokenBoxService.clearTokenBox(tokenBoxDTO.getRefresh()));
+    }
 }
