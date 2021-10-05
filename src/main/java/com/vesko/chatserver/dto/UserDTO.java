@@ -11,7 +11,6 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @Getter
@@ -27,16 +26,16 @@ public class UserDTO extends BaseDTO<User> {
     private String password;
 
     @JsonView({OutputViews.Detailed.class})
-    private boolean accountNonExpired;
+    private boolean accountNonExpired = true;
 
     @JsonView({OutputViews.Detailed.class})
-    private boolean accountNonLocked;
+    private boolean accountNonLocked = true;
 
     @JsonView({OutputViews.Detailed.class})
-    private boolean credentialsNonExpired;
+    private boolean credentialsNonExpired = true;
 
     @JsonView({OutputViews.Detailed.class})
-    private boolean enabled;
+    private boolean enabled = true;
 
     public UserDTO(User user) {
         super(user);

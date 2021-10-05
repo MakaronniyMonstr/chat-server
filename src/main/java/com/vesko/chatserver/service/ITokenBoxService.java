@@ -4,8 +4,6 @@ import com.vesko.chatserver.entity.TokenBox;
 import com.vesko.chatserver.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.naming.AuthenticationException;
-
 @Transactional
 public interface ITokenBoxService {
     TokenBox obtainTokenBox(String username);

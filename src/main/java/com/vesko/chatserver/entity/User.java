@@ -17,7 +17,6 @@ import java.util.Set;
 @Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity implements UserDetails {
     @Column(unique = true)
     private @NonNull String username;

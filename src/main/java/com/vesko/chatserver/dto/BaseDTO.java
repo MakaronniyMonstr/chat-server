@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Setter
 @Getter
-public class BaseDTO<T extends BaseEntity> {
+public abstract class BaseDTO<T extends BaseEntity> {
     @JsonView({OutputViews.Admin.class})
     @Null(groups = {InputViews.General.class})
     private Long id;

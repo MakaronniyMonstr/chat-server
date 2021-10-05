@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional()
+@Transactional
 public interface IUserService {
     @Transactional(readOnly = true)
     User findUserByUsername(String username);

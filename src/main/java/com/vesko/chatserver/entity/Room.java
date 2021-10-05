@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.Set;
 
 @Table(name = "room")
@@ -18,10 +19,9 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Room extends BaseEntity {
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Message> messages;
 
     @OneToMany(mappedBy = "room", orphanRemoval = true)
     private Set<RoomMember> roomMembers;
-
 }

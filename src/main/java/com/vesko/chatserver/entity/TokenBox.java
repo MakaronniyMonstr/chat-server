@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class TokenBox extends BaseEntity {
     private String access;
     private String refresh;
