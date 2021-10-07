@@ -31,6 +31,12 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
         return ex.getJsonSerializableMessage();
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({ActionNotPermittedException.class})
+    public Map<String, String> actionNotPermittedExceptionHandler(JsonParsableException ex) {
+        return ex.getJsonSerializableMessage();
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,

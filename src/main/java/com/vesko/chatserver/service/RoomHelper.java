@@ -2,18 +2,20 @@ package com.vesko.chatserver.service;
 
 import com.vesko.chatserver.entity.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RoomHelper implements IRoomHelper {
     private final IRoomService roomService;
     private final IRoomMemberService roomMemberService;
-
+    private final IMessageService messageService;
 
     public RoomHelper(IRoomService roomService,
-                      IRoomMemberService roomMemberService) {
+                      IRoomMemberService roomMemberService, IMessageService messageService) {
         this.roomService = roomService;
         this.roomMemberService = roomMemberService;
+        this.messageService = messageService;
     }
 
     @Override
@@ -24,6 +26,7 @@ public class RoomHelper implements IRoomHelper {
         return addMember(room, user, ERoomRole.ADMIN);
     }
 
+    @PreAuthorize("@roomPermission.canWrite(#room, principal)")
     @Override
     public Room addMember(Room room, User user, ERoomRole roomRole) {
         RoomMember roomMember = new RoomMember(user, roomRole, room);
@@ -32,14 +35,32 @@ public class RoomHelper implements IRoomHelper {
         return room;
     }
 
+    @PreAuthorize("@roomPermission.canWrite(#room, principal)")
     @Override
     public Room removeMember(Room room, User user) {
         room.getRoomMembers().removeIf(roomMember -> roomMember.getUser().equals(user));
+
         return room;
     }
 
+    @PreAuthorize("@roomPermission.isMember(#room, principal)")
     @Override
     public Room addMessage(Room room, Message message) {
+        message = messageService.save(message);
+        message.setRoom(room);
+        message.setUser((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
+        return room;
+    }
+
+    @PreAuthorize("@roomPermission.isMember(#room, principal) &&" +
+            "@messagePermission.canWrite(#room, principal)")
+    @Override
+    public Room editMessage(Room room, Message message) {
+
+
         return null;
     }
+
+
 }

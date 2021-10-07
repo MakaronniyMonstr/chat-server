@@ -13,4 +13,5 @@ public interface IRoomHelper {
     Room removeMember(Room room, User user);
 
     Room addMessage(Room room, Message message);
+    Room editMessage(Room room, Message message);
 }
