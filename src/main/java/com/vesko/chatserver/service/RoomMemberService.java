@@ -1,8 +1,6 @@
 package com.vesko.chatserver.service;
 
-import com.vesko.chatserver.entity.Room;
 import com.vesko.chatserver.entity.RoomMember;
-import com.vesko.chatserver.entity.User;
 import com.vesko.chatserver.repository.RoomMemberRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,7 @@ public class RoomMemberService implements IRoomMemberService {
     }
 
     @Override
-    public boolean existsByUserAndRoom(User user, Room room) {
-        return roomMemberRepository.existsByRoomAndUser(room, user);
+    public void remove(RoomMember roomMember) {
+        roomMemberRepository.removeById(roomMember.getId());
     }
 }

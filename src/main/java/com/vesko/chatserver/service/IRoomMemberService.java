@@ -8,7 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface IRoomMemberService {
     RoomMember save(RoomMember roomMember);
-
-    @Transactional(readOnly = true)
-    boolean existsByUserAndRoom(User user, Room room);
+    void remove(RoomMember roomMember);
 }

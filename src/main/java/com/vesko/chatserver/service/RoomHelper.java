@@ -37,9 +37,16 @@ public class RoomHelper implements IRoomHelper {
 
     @PreAuthorize("@roomPermission.canWrite(#room, principal)")
     @Override
-    public Room removeMember(Room room, User user) {
-        room.getRoomMembers().removeIf(roomMember -> roomMember.getUser().equals(user));
+    public Room removeMember(Room room, RoomMember roomMember) {
+        roomMemberService.remove(roomMember);
 
+        return room;
+    }
+
+    @PreAuthorize("@roomPermission.canWrite(#room, principal)")
+    @Override
+    public Room changeMember(Room room, RoomMember roomMember) {
+        roomMemberService.save(roomMember);
         return room;
     }
 
@@ -56,10 +63,8 @@ public class RoomHelper implements IRoomHelper {
     @PreAuthorize("@roomPermission.isMember(#room, principal) &&" +
             "@messagePermission.canWrite(#room, principal)")
     @Override
-    public Room editMessage(Room room, Message message) {
-
-
-        return null;
+    public Message editMessage(Message message) {
+        return messageService.save(message);
     }
 
 

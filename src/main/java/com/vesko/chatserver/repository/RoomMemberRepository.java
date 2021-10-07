@@ -10,4 +10,5 @@ import java.util.Optional;
 
 public interface RoomMemberRepository extends JpaRepository<RoomMember, Long>, JpaSpecificationExecutor<RoomMember> {
     Optional<RoomMember> findByRoomAndUser(Room room, User user);
+    void removeById(Long id);
 }
