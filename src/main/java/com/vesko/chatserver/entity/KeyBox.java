@@ -6,15 +6,16 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Table(name = "message")
+@Table(name = "key_box")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Message extends BaseEntity {
-    private String text;
+public class KeyBox extends BaseEntity {
+    private String sessionKey;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "keyBox")
     private User user;
 }

@@ -27,18 +27,17 @@ public class User extends BaseEntity implements UserDetails {
     @JoinColumn(name = "token_box_id", referencedColumnName = "id")
     private TokenBox tokenBox = new TokenBox();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<RoomMember> roomMembers;
-
-
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "key_box_id", referencedColumnName = "id")
+    private KeyBox keyBox = new KeyBox();
 
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isCredentialsNonExpired = true;
     private boolean isEnabled = true;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Message> messages;
+    @OneToMany(orphanRemoval = true)
+    private Set<Message> messages = new java.util.LinkedHashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

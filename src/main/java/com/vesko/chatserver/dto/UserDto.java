@@ -1,10 +1,12 @@
 package com.vesko.chatserver.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.vesko.chatserver.dto.view.InputViews;
 import com.vesko.chatserver.dto.view.OutputViews;
 import com.vesko.chatserver.entity.User;
 import com.vesko.chatserver.validator.Password;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,11 +14,14 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-public class UserDTO extends BaseDTO<User> {
-    @JsonView({OutputViews.Short.class})
+public class UserDto extends BaseDto<User> {
+    @JsonView({OutputViews.Short.class, OutputViews.Message.class})
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long id;
+
+    @JsonView({OutputViews.Short.class, OutputViews.Message.class})
     @NotNull(groups = {InputViews.General.class})
     private String username;
 
@@ -37,7 +42,7 @@ public class UserDTO extends BaseDTO<User> {
     @JsonView({OutputViews.Detailed.class})
     private boolean enabled = true;
 
-    public UserDTO(User user) {
+    public UserDto(User user) {
         super(user);
     }
 }

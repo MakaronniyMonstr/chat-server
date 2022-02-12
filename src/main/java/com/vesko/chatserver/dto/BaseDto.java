@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Setter
 @Getter
-public abstract class BaseDTO<T extends BaseEntity> {
+public abstract class BaseDto<T extends BaseEntity> {
     @JsonView({OutputViews.Admin.class})
     @Null(groups = {InputViews.General.class})
     private Long id;
@@ -34,7 +34,7 @@ public abstract class BaseDTO<T extends BaseEntity> {
     @Null(groups = {InputViews.General.class})
     private LocalDate modifiedAt;
 
-    public <E extends BaseEntity> BaseDTO(E entity) {
+    public <E extends BaseEntity> BaseDto(E entity) {
         BeanUtils.copyProperties(entity, this);
     }
 
@@ -42,7 +42,7 @@ public abstract class BaseDTO<T extends BaseEntity> {
         T entity;
 
         try {
-            Class<T> entityClass = (Class<T>) GenericTypeResolver.resolveTypeArguments(getClass(), BaseDTO.class)[0];
+            Class<T> entityClass = (Class<T>) GenericTypeResolver.resolveTypeArguments(getClass(), BaseDto.class)[0];
             entity = entityClass.getDeclaredConstructor().newInstance();
             BeanUtils.copyProperties(this, entity);
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {

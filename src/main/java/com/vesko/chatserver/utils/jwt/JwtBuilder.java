@@ -15,7 +15,7 @@ public class JwtBuilder {
     private final byte[] secret;
     private final SigningKeyResolver signingKeyResolver;
 
-    public JwtBuilder(@Value("${spring.secret}") String secret) {
+    public JwtBuilder(@Value("${spring.jwt.secret}") String secret) {
         this.secret = secret.getBytes(StandardCharsets.UTF_8);
         this.signingKeyResolver = new SigningKeyResolverAdapter() {
             @Override

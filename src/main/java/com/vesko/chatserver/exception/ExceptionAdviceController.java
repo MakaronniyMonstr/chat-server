@@ -26,7 +26,7 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({TokenValidationException.class})
+    @ExceptionHandler({TokenValidationException.class, CipherException.class})
     public Map<String, String> tokenValidationExceptionHandler(JsonParsableException ex) {
         return ex.getJsonSerializableMessage();
     }

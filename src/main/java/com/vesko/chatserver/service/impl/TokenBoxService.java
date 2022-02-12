@@ -1,9 +1,11 @@
-package com.vesko.chatserver.service;
+package com.vesko.chatserver.service.impl;
 
 import com.vesko.chatserver.entity.TokenBox;
 import com.vesko.chatserver.entity.User;
 import com.vesko.chatserver.exception.TokenValidationException;
 import com.vesko.chatserver.repository.TokenBoxRepository;
+import com.vesko.chatserver.service.ITokenBoxService;
+import com.vesko.chatserver.service.IUserService;
 import com.vesko.chatserver.utils.jwt.JwtBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,14 +51,12 @@ public class TokenBoxService implements ITokenBoxService {
     }
 
     @Override
-    public TokenBox clearTokenBox(String refreshToken) {
+    public void clearTokenBox(String refreshToken) {
         String username = jwtBuilder.validateTokenAndGetClaims(refreshToken).getSubject();
         TokenBox tokenBox = tokenBoxRepository.findTokenBoxByUserUsernameAndRefresh(username, refreshToken)
                 .orElseThrow(() -> new TokenValidationException(username));
         tokenBox.setAccess(null);
         tokenBox.setRefresh(null);
-
-        return tokenBox;
     }
 
     @Override

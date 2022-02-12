@@ -5,4 +5,6 @@ public class OutputViews {
     public interface Detailed extends Short {}
     public interface SuperDetailed extends Detailed {}
     public interface Admin extends Detailed {}
+
+    public interface Message extends Short {}
 }

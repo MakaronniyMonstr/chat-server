@@ -1,13 +1,15 @@
 package com.vesko.chatserver.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.vesko.chatserver.dto.TokenBoxDTO;
-import com.vesko.chatserver.dto.UserDTO;
+import com.vesko.chatserver.dto.TokenBoxDto;
+import com.vesko.chatserver.dto.UserDto;
+import com.vesko.chatserver.dto.mapper.TokenBoxMapper;
+import com.vesko.chatserver.dto.mapper.UserMapper;
 import com.vesko.chatserver.dto.view.InputViews;
 import com.vesko.chatserver.dto.view.OutputViews;
 import com.vesko.chatserver.entity.User;
 import com.vesko.chatserver.service.ITokenBoxService;
-import com.vesko.chatserver.service.UserService;
+import com.vesko.chatserver.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping()
+@RequestMapping
 public class AuthController {
     private final UserService userService;
     private final ITokenBoxService tokenBoxService;
@@ -42,37 +44,37 @@ public class AuthController {
 
     @PostMapping("/register")
     @JsonView({OutputViews.Detailed.class})
-    public UserDTO register(@Validated(InputViews.New.class) @RequestBody UserDTO userDTO) {
+    public UserDto register(@Validated(InputViews.New.class) @RequestBody UserDto userDTO) {
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
-        User user = userService.save(userDTO.toEntity());
+        User user = userService.save(UserMapper.INSTANCE.toEntity(userDTO));
 
-        return new UserDTO(user);
+        return new UserDto(user);
     }
 
     @PostMapping("/authenticate")
-    @JsonView({OutputViews.Detailed.class})
-    public TokenBoxDTO authenticate(@Validated(InputViews.New.class) @RequestBody UserDTO userDTO) {
+    @JsonView({OutputViews.Message.class})
+    public TokenBoxDto authenticate(@Validated(InputViews.New.class) @RequestBody UserDto userDTO) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     userDTO.getUsername(),
                     userDTO.getPassword()
             ));
-        } catch (final BadCredentialsException ex) {
+        } catch (BadCredentialsException ex) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
-        return new TokenBoxDTO(tokenBoxService.obtainTokenBox(userDTO.getUsername()));
+        return TokenBoxMapper.INSTANCE.tokenBoxToTokenBoxDto(tokenBoxService.obtainTokenBox(userDTO.getUsername()));
     }
 
     @PostMapping("/refresh")
-    @JsonView({OutputViews.Detailed.class})
-    public TokenBoxDTO refresh(@Validated(InputViews.New.class) @RequestBody TokenBoxDTO tokenBoxDTO) {
-        return new TokenBoxDTO(tokenBoxService.refreshTokenBox(tokenBoxDTO.getRefresh()));
+    @JsonView({OutputViews.Message.class})
+    public TokenBoxDto refresh(@Validated(InputViews.New.class) @RequestBody TokenBoxDto tokenBoxDTO) {
+        return TokenBoxMapper.INSTANCE.tokenBoxToTokenBoxDto(tokenBoxService.refreshTokenBox(tokenBoxDTO.getRefresh()));
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/end")
     @JsonView({OutputViews.Detailed.class})
-    public TokenBoxDTO logout(@Validated(InputViews.New.class) @RequestBody TokenBoxDTO tokenBoxDTO) {
-        return new TokenBoxDTO(tokenBoxService.clearTokenBox(tokenBoxDTO.getRefresh()));
+    public void logout(@Validated(InputViews.New.class) @RequestBody TokenBoxDto tokenBoxDTO) {
+        tokenBoxService.clearTokenBox(tokenBoxDTO.getRefresh());
     }
 }

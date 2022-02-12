@@ -1,7 +1,8 @@
-package com.vesko.chatserver.service;
+package com.vesko.chatserver.service.impl;
 
 import com.vesko.chatserver.entity.User;
 import com.vesko.chatserver.repository.UserRepository;
+import com.vesko.chatserver.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
